@@ -12,6 +12,26 @@ Integrates with x4-context and x4-harness.
 | Episodic | Project / task lifetime | Trajectory of actions + outcomes |
 | Semantic | Long-term | Distilled facts and skills |
 
+<!-- X4-APEX-DIAGRAM-START:x4-memory-core -->
+
+```mermaid
+flowchart TB
+    AGENT[x4-harness or Agent] --> API[Memory API / Contract]
+    API --> WORK[Working Layer]
+    API --> EPISODIC[Episodic Layer]
+    API --> SEMANTIC[Semantic Layer]
+    WORK --> STORE[Storage Implementation Boundary]
+    EPISODIC --> STORE
+    SEMANTIC --> STORE
+    STORE --> PROVENANCE[Trajectory and Context Metadata]
+    PROVENANCE --> RESULT[Retrieved Memory]
+    RESULT --> AGENT
+    CONTEXT[x4-context] <--> API
+    NOTE[Keep adapter implementations and durability claims explicit] -. contract review .-> STORE
+```
+
+<!-- X4-APEX-DIAGRAM-END:x4-memory-core -->
+
 ## Quick Start
 
 ```bash
