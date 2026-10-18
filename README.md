@@ -22,3 +22,49 @@ python -m x4_memory_core.demo
 ## License
 
 Apache-2.0
+
+## APEX Architecture Map
+
+> Status: architecture documentation; implementation and deployment claims require independent verification.
+
+```mermaid
+classDiagram
+  class MemoryStore {
+    <<interface>>
+    +put(record, policy)
+    +get(key, scope)
+    +delete(key, scope)
+    +list(scope, cursor)
+  }
+  class MemoryRecord {
+    +id
+    +scope
+    +created_at
+    +expires_at
+    +content
+    +metadata
+  }
+  class SQLiteAdapter {
+    +put()
+    +get()
+    +delete()
+    +list()
+  }
+  class InMemoryAdapter {
+    +put()
+    +get()
+    +delete()
+    +list()
+  }
+  class MemoryService {
+    +validate_scope()
+    +apply_retention()
+    +redact()
+  }
+  MemoryService --> MemoryStore : depends on
+  MemoryStore <|.. SQLiteAdapter
+  MemoryStore <|.. InMemoryAdapter
+  MemoryService ..> MemoryRecord : validates
+```
+**Evidence note:** This is the adapter contract blueprint. Confirm the actual public interface, type signatures, and adapter implementations before publishing it as a stable API.
+
